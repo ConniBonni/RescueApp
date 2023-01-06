@@ -1,0 +1,16 @@
+.desktopBg{
+    background-image: url(https://media-rockstargames-com.akamaized.net/tina-uploads/posts/ak73k92o47ko75/5de9d8bc4ffeabb209ec67ab3721ea281da5cd05.jpg);
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    animation: desktopFadeIn 2s;
+}
+@keyframes desktopFadeIn {
+    0%{
+        filter: blur(20px);
+        transform: scale(1.1);
+    }
+    100%{
+        filter: blur(0px);
+    }
+}
