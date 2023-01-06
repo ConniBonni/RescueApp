@@ -12,9 +12,11 @@ const windowsManager = {
             this.windowElement.innerHTML = windowsManager.presetHtml;
             windowsParent.appendChild(this.windowElement);
             this.headerElement = this.windowElement.querySelector(".windowHeader");
-            document.addEventListener("drag" , (e) =>{
-                window.alert("test");
+            
+            this.headerElement.addEventListener("mousedown" , (e) =>{
+                console.log("clicked");
             })
+
         }
 
     }
