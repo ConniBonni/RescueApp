@@ -1,5 +1,5 @@
 nav{
-    width: 300px;
+    min-width: 130px;
     max-width: 1500px;
     height: 70px;
     position: absolute;
@@ -10,4 +10,35 @@ border-radius: 16px;
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(8px);
 -webkit-backdrop-filter: blur(8px);
+display: flex;
+justify-content: center;
+align-items: center;
+animation: navigationFloatIn 0.4s ease-out;
+}
+nav button{
+    width: 50px;
+    height: 50px;
+    background-color: var(--backgroundGlass);
+    border:none;
+    border-radius: 10px;
+    fill:white;
+    margin:5px;
+    outline: none;
+    transition: 0.3s all;
+}
+nav button:hover{
+    opacity: 0.6;
+}
+nav button:active{
+    transform: translateY(2px);
+}
+@keyframes navigationFloatIn {
+    0%{
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    100%{
+        transform: translateY(0px);
+        opacity: 1;
+    }
 }

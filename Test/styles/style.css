@@ -1,11 +1,15 @@
 body{
     --backgroundGlass: rgba(81, 81, 81, 0.568);
+    --backgroundWindow:rgba(48, 48, 48, 0.856);
     --backgroundGlassLight: rgba(81, 81, 81, 0.24);
-    --backgroundGlassOutline:rgb(65, 65, 65);
+    --backgroundGlassOutline:rgb(80, 80, 80);
     --firstColor:rgb(129,200,246);
     margin:0px;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+    --textColor1: white;
+    --textColor2: lightgray;
+    --textColor3:gray;
 }
