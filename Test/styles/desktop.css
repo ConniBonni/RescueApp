@@ -65,18 +65,3 @@ backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     }
 }
-.addProgramm{
-    transition: 0.3s all;
-    background-color: var(--backgroundGlass);
-    backdrop-filter: blur(20px);
-    grid-column-start: 1;
-    grid-row-start: 1;
-    border-radius: 20px;
-    outline:none;
-    border:none;
-    fill:var(--firstColor);
-    transition: 0.3s all;
-}
-.addProgramm:hover{
-
-}
