@@ -11,7 +11,11 @@ const windowsManager = {
         isFocused = false;
         isFullView = false;
         initalSize;
-        constructor(name, icon)
+        icon;
+        taskbarInstance;
+        //Prefabs
+        canStack = true;
+        constructor(name, icon , programm)
         {   
             const windowsParent = document.querySelector(".windows");
             this.windowElement = document.createElement("div");
@@ -57,6 +61,8 @@ const windowsManager = {
            })
 
            this.initalSize = {"x": windowBoundingRect.width , "y":windowBoundingRect.height};
+           this.taskbarInstance = taskbar.getInstance(this , programm);
+           this.taskbarInstance.addInstances(this);
         }
         setPosition(x, y){
             this.windowElement.style.top = y + "px";
@@ -71,6 +77,7 @@ const windowsManager = {
         setIcon(newIcon)
         {   
             const iconElem = this.windowElement.querySelector(".windowIcon");
+            this.icon = newIcon;
             if(newIcon.svg != undefined)
             {   
                 iconElem.innerHTML = icon.svg;
@@ -84,6 +91,7 @@ const windowsManager = {
         {   
             const dektopBg = document.querySelector(".desktopBg");
             this.headerElement.addEventListener("mousedown" , (e) =>{
+                if(this.isFullView) return;
                 this.focus();
                 this.dragStarted = true;
                 this.mousePosition = { "x" : e.pageX, "y" : e.pageY};
@@ -118,10 +126,19 @@ const windowsManager = {
             this.windowElement.style.transition = "0.3s all ease-in"
             this.windowElement.style.transform = `translate(${relPos.x}px) translateY(${relPos.y}px) scale(0)`
             this.windowElement.style.opacity = 0;
+            this.defocus();
+        }
+        open()
+        {   
+            this.isMinimalized = false;
+            this.windowElement.style.transition = "0.3s all ease-in"
+            this.windowElement.style.transform = `translate(0px) translateY(0px) scale(1)`
+            this.windowElement.style.opacity = 1;
+            this.focus();
+            this.taskbarInstance.setIndicator("OPEN");
         }
         close()
         {   
-            console.log("hello")
             this.defocus();
             this.windowElement.style.transition = "0.2s all"
             this.windowElement.style.transform = "scale(0.9)"
@@ -129,6 +146,7 @@ const windowsManager = {
             setTimeout(() =>{
                 this.windowElement.remove();
             }, 200)
+            this.taskbarInstance.close();
         }
         focus()
         {
@@ -136,12 +154,20 @@ const windowsManager = {
             if(windowsParent.firstChild == this.windowElement) return;
             this.windowElement.setAttribute("class" , "window windowFocused");
             this.windowElement.style.zIndex = 1;
+            this.taskbarInstance.setIndicator("FOCUS");
     }
         defocus()
-        {
+        {   
+            if(this.isFullView == true) return;
             this.windowElement.style.opacity = 0.98
             this.windowElement.style.zIndex = 0;
             this.windowElement.setAttribute("class" , "window");
+                if(this.isMinimalized == true)
+            {
+                this.taskbarInstance.setIndicator("BG");
+                return;
+            }
+            this.taskbarInstance.setIndicator("OPEN");
         }
         fullWindow()
         {   
@@ -174,5 +200,10 @@ const windowsManager = {
 
 }
 window.addEventListener("load" , () =>{
-    new windowsManager.Instance("test" , {"url": "https://img.icons8.com/color/512/crime.png"})
+    new windowsManager.Instance("Waffendatenbank" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
+    new windowsManager.Instance("Waffendatenbank" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
+    new windowsManager.Instance("Waffendatenbank" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
+    new windowsManager.Instance("Waffendatenbank" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
+    new windowsManager.Instance("Waffendatenbank" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
+    new windowsManager.Instance("Gesundheitssystem" , {"url": "https://img.icons8.com/color/512/hospital-bed.png"}, "WEAPONDATABASES")
 })

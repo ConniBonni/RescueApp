@@ -7,8 +7,8 @@
 .window{
     width: 500px;
     height: 300px;
-    backdrop-filter: blur(2px);
--webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
 background-color: var(--backgroundWindow);
 border-radius: 10px;
 border:1px solid var(--backgroundGlassOutline);

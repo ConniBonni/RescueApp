@@ -26,6 +26,7 @@ nav button{
     margin:5px;
     outline: none;
     transition: 0.3s all;
+    overflow: hidden;
 }
 nav button:hover{
     opacity: 0.6;
@@ -41,5 +42,62 @@ nav button:active{
     100%{
         transform: translateY(0px);
         opacity: 1;
+    }
+}
+nav .taskinstanceIcon{
+    width: 35px;
+    height: 35px;
+    background-size: cover;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.instanceBtn{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+}
+nav .taskIndicator{
+    height: 4px;
+    border-radius: 3px;
+    transition: 0.3s all cubic-bezier(0.11, 1.04, 0.51, 1.46);
+}
+nav .taskIndicatorOpen{
+    background-color: var(--textColor1);
+    width: 25px;
+}
+nav .taskIndicatorBG{
+    background-color: var(--textColor2);
+    width: 7px;
+}
+nav .taskIndicatorFocus{
+    width: 30px;
+    height: 4px;
+    background-color: var(--firstColor);
+}
+.navCtxMenu{
+    min-width: 100px;
+    max-width: 500px;
+    min-height: 40px;
+    max-height: 900px;
+    background-color: var(--backgroundWindow);
+    position: absolute;
+    backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+bottom: 80px;
+border-radius: 10px;
+animation: navCtxMenIn 0.3s ease-out;
+overflow: hidden;
+}
+@keyframes navCtxMenIn {
+    0%{
+        opacity: 0;
+        transform: translateY(50px);
+        max-height: 40px;
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0px);
+        max-height: 900px;
     }
 }
