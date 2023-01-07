@@ -22,6 +22,7 @@ const taskbar = {
         taskIndicatorElem;
         btnElem;
         instances = [];
+        isPinned = false;
         constructor(prog, options)
         {   
             this.programm = prog;
@@ -101,10 +102,26 @@ const taskbar = {
 
             }
         }
-        close()
-        {
-            if(this.isPinned == false)
-            {
+        close(inst)
+        {   
+            let index = 0;
+            let windowInst;
+            this.instances.forEach(i =>{
+                if(i == inst)
+                {
+                    windowInst = i;
+                    return;
+                }
+                index++;
+            })
+            
+            this.instances.splice(windowInst , 1);
+
+            console.log(this.instances[windowInst]);
+                console.log(this.instances.length)
+                if(this.instances.length > 0) return;
+                if(this.isPinned == false)
+                {   
                 this.btnElem.style.borderRadius = "0px";
                 this.btnElem.style.width = "0px";
                 this.btnElem.style.opacity = 0;

@@ -10,6 +10,7 @@ const windowsManager = {
         mousePosition;
         isFocused = false;
         isFullView = false;
+        isClosed = false;
         initalSize;
         icon;
         taskbarInstance;
@@ -146,7 +147,8 @@ const windowsManager = {
             setTimeout(() =>{
                 this.windowElement.remove();
             }, 200)
-            this.taskbarInstance.close();
+            this.isClosed = true;
+            this.taskbarInstance.close(this);
         }
         focus()
         {
