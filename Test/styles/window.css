@@ -46,7 +46,7 @@ flex-direction: column;
     font-family: "Montserrat" , sans-serif;
     color:var(--textColor1);
     position: relative;
-    text-align: left;
+    text-align: center;
     margin-left: 10px;
 }
 .window .windowHeader .windowBtns button{
@@ -59,9 +59,16 @@ flex-direction: column;
 }
 .window .windowHeader .windowBtns button svg{
     transform: scale(2);
-    fill: white;
+    fill: var(--textColor1);
     transition: 0.3s all;
 }
 .window .windowHeader .windowBtns button:hover{
     background-color: gray;
+}
+.window .windowHeader .windowIcon{
+    width: 20px;
+    height: 20px;
+    background-color: var(--textColor3);
+    border-radius: 50%;
+    margin-left:5px;
 }
