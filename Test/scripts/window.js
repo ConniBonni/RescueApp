@@ -29,6 +29,9 @@ const windowsManager = {
             
            this.enablePositioning();
            
+           // Setting windowIcon
+           this.setIcon(icon);
+
            // Minimalize
            const minimalizeBtn = this.windowElement.querySelector(".minimalize");
            minimalizeBtn.addEventListener("click" , () =>{
@@ -65,6 +68,18 @@ const windowsManager = {
             const titleElement = this.windowElement.querySelector(".windowTitle");
             titleElement.textContent = newName;
         }
+        setIcon(newIcon)
+        {   
+            const iconElem = this.windowElement.querySelector(".windowIcon");
+            if(newIcon.svg != undefined)
+            {   
+                iconElem.innerHTML = icon.svg;
+            }
+            if(newIcon.url != undefined)
+            {
+                iconElem.style.backgroundImage = `url(${newIcon.url})`
+            }
+        }
         enablePositioning()
         {   
             const dektopBg = document.querySelector(".desktopBg");
@@ -82,9 +97,6 @@ const windowsManager = {
                 dektopBg.style.filter = "blur(0px)"
                 this.windowElement.style.transition = "0.4s all";
                 this.focus();
-                if(this.isFullView == true){
-                    this.setSize(this.initalSize.x, this.initalSize.y)
-                }
                 }, {once:true});
             })
             document.addEventListener("mousemove", (e) =>{
@@ -103,7 +115,6 @@ const windowsManager = {
             const windowRect = this.windowElement.getBoundingClientRect();
             const windowPos = {"x" : windowRect.x + windowRect.width / 2 , "y":windowRect.y + navRect.height / 2}
             const relPos = { "x" : navPos.x - windowPos.x , "y": navPos.y - windowPos.y}
-            console.log(relPos);
             this.windowElement.style.transition = "0.3s all ease-in"
             this.windowElement.style.transform = `translate(${relPos.x}px) translateY(${relPos.y}px) scale(0)`
             this.windowElement.style.opacity = 0;
@@ -134,7 +145,6 @@ const windowsManager = {
         }
         fullWindow()
         {   
-            console.log(this.isFullView)
             if(this.isFullView == false)
             {   
                 this.setPosition(0, 0)
@@ -148,6 +158,7 @@ const windowsManager = {
                 })
                 return;
             }
+            this.setSize(this.initalSize.x, this.initalSize.y);
 
         }
         setSize(x, y)
@@ -163,7 +174,5 @@ const windowsManager = {
 
 }
 window.addEventListener("load" , () =>{
-    new windowsManager.Instance("test")
-    new windowsManager.Instance("test2")
-    new windowsManager.Instance("test3")
+    new windowsManager.Instance("test" , {"url": "https://img.icons8.com/color/512/crime.png"})
 })
