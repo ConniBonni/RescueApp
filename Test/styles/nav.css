@@ -14,6 +14,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 animation: navigationFloatIn 0.4s ease-out;
+z-index: 1;
 }
 nav button{
     width: 50px;

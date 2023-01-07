@@ -8,6 +8,9 @@ const windowsManager = {
         isMinimalized = false;
         windowposition;
         mousePosition;
+        isFocused = false;
+        isFullView = false;
+        initalSize;
         constructor(name, icon)
         {   
             const windowsParent = document.querySelector(".windows");
@@ -34,9 +37,23 @@ const windowsManager = {
            // Close Btn;
            const closeBtn = this.windowElement.querySelector(".close");
            closeBtn.addEventListener("click" , () =>{
+            console.log("closed")
                 this.close();
            }, {once:true})
+           //Enabling focusing
+           this.windowElement.addEventListener("click" , () =>{
+            this.focus();
+           })
+           //Defocussing
+           document.addEventListener("click" ,(e) =>{
+            if(!this.windowElement.contains(e.target)) this.defocus();
+           });
            windowsManager.OpenWindows.push(this);
+           this.windowElement.querySelector(".fullzise").addEventListener("click" , () =>{
+                this.fullWindow();
+           })
+
+           this.initalSize = {"x": windowBoundingRect.width , "y":windowBoundingRect.height};
         }
         setPosition(x, y){
             this.windowElement.style.top = y + "px";
@@ -52,21 +69,27 @@ const windowsManager = {
         {   
             const dektopBg = document.querySelector(".desktopBg");
             this.headerElement.addEventListener("mousedown" , (e) =>{
+                this.focus();
                 this.dragStarted = true;
                 this.mousePosition = { "x" : e.pageX, "y" : e.pageY};
                 this.windowElement.style.transition  ="none"
                 dektopBg.style.transform = "scale(1.1)";
                 dektopBg.style.filter = "blur(20px)"
 
-                document.addEventListener("mouseup", () =>{
+                document.addEventListener("mouseup", (mouseUpEvent) =>{
                     this.dragStarted = false;
                     dektopBg.style.transform = "scale(1)";
                 dektopBg.style.filter = "blur(0px)"
                 this.windowElement.style.transition = "0.4s all";
+                this.focus();
+                if(this.isFullView == true){
+                    this.setSize(this.initalSize.x, this.initalSize.y)
+                }
                 }, {once:true});
             })
             document.addEventListener("mousemove", (e) =>{
                 if(this.dragStarted == false) return;
+                this.focus();
                 const posDiff = { "x" : e.pageX - this.mousePosition.x, "y": e.pageY - this.mousePosition.y};
                 this.mousePosition = { "x" : e.pageX, "y" : e.pageY};
                 this.setPosition(this.windowposition.x + posDiff.x, this.windowposition.y + posDiff.y);
@@ -86,7 +109,9 @@ const windowsManager = {
             this.windowElement.style.opacity = 0;
         }
         close()
-        {
+        {   
+            console.log("hello")
+            this.defocus();
             this.windowElement.style.transition = "0.2s all"
             this.windowElement.style.transform = "scale(0.9)"
             this.windowElement.style.opacity = 0;
@@ -96,7 +121,42 @@ const windowsManager = {
         }
         focus()
         {
-            
+            const windowsParent = document.querySelector(".windows");
+            if(windowsParent.firstChild == this.windowElement) return;
+            this.windowElement.setAttribute("class" , "window windowFocused");
+            this.windowElement.style.zIndex = 1;
+    }
+        defocus()
+        {
+            this.windowElement.style.opacity = 0.98
+            this.windowElement.style.zIndex = 0;
+            this.windowElement.setAttribute("class" , "window");
+        }
+        fullWindow()
+        {   
+            console.log(this.isFullView)
+            if(this.isFullView == false)
+            {   
+                this.setPosition(0, 0)
+                this.windowElement.style.transition = "0.4s all cubic-bezier(0.51, 0.14, 0, 0.92)"
+                this.windowElement.style.width = "100%";
+                this.windowElement.style.height = "100%";
+                this.windowElement.style.borderRadius = "0px"
+                this.isFullView = true;
+                setTimeout(() =>{
+                    this.windowElement.style.transition = "0.4s all";
+                })
+                return;
+            }
+
+        }
+        setSize(x, y)
+        {   
+            this.windowElement.style.transition = "0.4s all cubic-bezier(0.51, 0.14, 0, 0.92)"
+            this.windowElement.style.width = x + "px";
+            this.windowElement.style.height = y+"px";
+            this.windowElement.style.borderRadius = "16px"
+            this.isFullView = false;
         }
 
     }
@@ -106,5 +166,4 @@ window.addEventListener("load" , () =>{
     new windowsManager.Instance("test")
     new windowsManager.Instance("test2")
     new windowsManager.Instance("test3")
-    new windowsManager.Instance("NOCH EIN FENSTER OMG")
 })
