@@ -1,8 +1,9 @@
 body{
     --backgroundGlass: rgba(81, 81, 81, 0.568);
-    --backgroundWindow:rgba(48, 48, 48, 0.98);
+    --backgroundWindow:rgba(48, 48, 48, 0.96);
     --backgroundGlassLight: rgba(81, 81, 81, 0.24);
     --backgroundGlassOutline:rgb(80, 80, 80);
+    --backgroundGlassCTXMenu: rgba(48, 48, 48, 0.75);
     --firstColor:rgb(129,200,246);
     margin:0px;
     overflow: hidden;

@@ -82,12 +82,17 @@ nav .taskIndicatorFocus{
     max-height: 900px;
     background-color: var(--backgroundWindow);
     position: absolute;
-    backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
 bottom: 80px;
 border-radius: 10px;
 animation: navCtxMenIn 0.3s ease-out;
 overflow: hidden;
+border: 1px solid var(--backgroundGlassOutline);
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+padding:10px;
+z-index: 1;
 }
 @keyframes navCtxMenIn {
     0%{

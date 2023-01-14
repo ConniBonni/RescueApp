@@ -12,12 +12,19 @@ const windowsManager = {
         isFullView = false;
         isClosed = false;
         initalSize;
+        initalPosition;
         icon;
         taskbarInstance;
+        windowName;
+        id;
+        x;
+        y;
         //Prefabs
         canStack = true;
-        constructor(name, icon , programm)
+        constructor(name, icon , programm , options)
         {   
+            this.windowName = name;
+            this.id = crypto.randomUUID();
             const windowsParent = document.querySelector(".windows");
             this.windowElement = document.createElement("div");
             this.windowElement.setAttribute("class" , "window");
@@ -28,7 +35,9 @@ const windowsManager = {
             // Setting windowPosition;
             const windowBoundingRect = this.windowElement.getBoundingClientRect();
             this.windowposition = {"x" : windowBoundingRect.x, "y" : windowBoundingRect.y};
-
+            this.x = windowBoundingRect.width;
+            this.y = windowBoundingRect.height;
+            this.initalPosition = this.windowposition;
             // Setting windowTitle;
             this.setTitle(name);
             
@@ -45,7 +54,6 @@ const windowsManager = {
            // Close Btn;
            const closeBtn = this.windowElement.querySelector(".close");
            closeBtn.addEventListener("click" , () =>{
-            console.log("closed")
                 this.close();
            }, {once:true})
            //Enabling focusing
@@ -62,13 +70,18 @@ const windowsManager = {
            })
 
            this.initalSize = {"x": windowBoundingRect.width , "y":windowBoundingRect.height};
+           // Taskbar
            this.taskbarInstance = taskbar.getInstance(this , programm);
            this.taskbarInstance.addInstances(this);
         }
         setPosition(x, y){
+            this.setPositionWithoutInitial(x ,y);
+            this.initalPosition = {"x": this.windowposition.x , "y": this.windowposition.y};
+            this.windowposition = {x , y}
+        }
+        setPositionWithoutInitial(x, y){
             this.windowElement.style.top = y + "px";
             this.windowElement.style.left = x + "px";
-            this.windowposition = {x , y}
         }
         setTitle(newName)
         {
@@ -116,6 +129,13 @@ const windowsManager = {
                 this.setPosition(this.windowposition.x + posDiff.x, this.windowposition.y + posDiff.y);
             })
         }
+        getOptions(opt)
+        {
+            if(opt.size!= undefined)
+            {
+                this.setSize(opt.size.x, opt.size.y);
+            }
+        }
         minimalize()
         {   
             this.isMinimalized = true;
@@ -124,16 +144,15 @@ const windowsManager = {
             const windowRect = this.windowElement.getBoundingClientRect();
             const windowPos = {"x" : windowRect.x + windowRect.width / 2 , "y":windowRect.y + navRect.height / 2}
             const relPos = { "x" : navPos.x - windowPos.x , "y": navPos.y - windowPos.y}
-            this.windowElement.style.transition = "0.3s all ease-in"
-            this.windowElement.style.transform = `translate(${relPos.x}px) translateY(${relPos.y}px) scale(0)`
+            this.windowElement.style.transform = `translate(${relPos.x}px , ${relPos.y}px) scale(0)`
             this.windowElement.style.opacity = 0;
             this.defocus();
         }
         open()
         {   
             this.isMinimalized = false;
-            this.windowElement.style.transition = "0.3s all ease-in"
-            this.windowElement.style.transform = `translate(0px) translateY(0px) scale(1)`
+            //this.windowElement.style.transition = "0.3s all ease-in"
+            this.windowElement.style.transform = null;
             this.windowElement.style.opacity = 1;
             this.focus();
             this.taskbarInstance.setIndicator("OPEN");
@@ -148,6 +167,7 @@ const windowsManager = {
                 this.windowElement.remove();
             }, 200)
             this.isClosed = true;
+            console.log(this);
             this.taskbarInstance.close(this);
         }
         focus()
@@ -175,6 +195,7 @@ const windowsManager = {
         {   
             if(this.isFullView == false)
             {   
+                const defaultTransition = this.windowElement.style.transition;
                 this.setPosition(0, 0)
                 this.windowElement.style.transition = "0.4s all cubic-bezier(0.51, 0.14, 0, 0.92)"
                 this.windowElement.style.width = "100%";
@@ -182,8 +203,8 @@ const windowsManager = {
                 this.windowElement.style.borderRadius = "0px"
                 this.isFullView = true;
                 setTimeout(() =>{
-                    this.windowElement.style.transition = "0.4s all";
-                })
+                    this.windowElement.style.transition = defaultTransition;
+                }, 300)
                 return;
             }
             this.setSize(this.initalSize.x, this.initalSize.y);
@@ -191,21 +212,31 @@ const windowsManager = {
         }
         setSize(x, y)
         {   
+            this.initalSize = {"x": this.x , "y": this.y};
+            this.setSizeWithoutInitial(x , y);
+        }
+        setSizeWithoutInitial(x, y)
+        {   
+            const defaultTransition = this.windowElement.style.transition;
             this.windowElement.style.transition = "0.4s all cubic-bezier(0.51, 0.14, 0, 0.92)"
             this.windowElement.style.width = x + "px";
             this.windowElement.style.height = y+"px";
             this.windowElement.style.borderRadius = "16px"
+            this.x = x;
+            this.y = y;
             this.isFullView = false;
+            setTimeout(() =>{
+                this.windowElement.style.transition = defaultTransition;
+            }, 300)
         }
 
     }
 
 }
 window.addEventListener("load" , () =>{
-    new windowsManager.Instance("Waffendatenbank" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
-    new windowsManager.Instance("Waffendatenbank" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
-    new windowsManager.Instance("Waffendatenbank" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
-    new windowsManager.Instance("Waffendatenbank" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
-    new windowsManager.Instance("Waffendatenbank" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
-    new windowsManager.Instance("Gesundheitssystem" , {"url": "https://img.icons8.com/color/512/hospital-bed.png"}, "WEAPONDATABASES")
-})
+         new windowsManager.Instance("Fenster 1" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
+    new windowsManager.Instance("Fenster 2" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
+         new windowsManager.Instance("Fenster 1" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
+    new windowsManager.Instance("Fenster 2" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
+         new windowsManager.Instance("Fenster 1" , {"url": "https://img.icons8.com/color/512/crime.png"}, "WEAPONDATABASE")
+})  

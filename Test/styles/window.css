@@ -5,10 +5,10 @@
 }
 
 .window{
-    width: 500px;
+    width: 550px;
     height: 300px;
-    backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(30px);
+-webkit-backdrop-filter: blur(30px);
 background-color: var(--backgroundWindow);
 border-radius: 10px;
 border:1px solid var(--backgroundGlassOutline);
